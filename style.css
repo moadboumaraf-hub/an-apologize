@@ -1,0 +1,593 @@
+
+/* =========================================
+   1. إعدادات عامة
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --black: #100d0b;
+    --dark-brown: #1b1511;
+    --brown: #38271d;
+    --light-brown: #72523b;
+    --gold: #c6a477;
+    --beige: #e8d6b9;
+    --paper: #d8c3a1;
+    --text: #e9dbc6;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* =========================================
+   2. الخلفية السينمائية
+========================================= */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(
+            ellipse at 50% 40%,
+            rgba(91, 60, 38, 0.25),
+            transparent 65%
+        ),
+        linear-gradient(
+            135deg,
+            #100d0b,
+            #211710,
+            #100d0b
+        );
+    z-index: -3;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(
+            circle at center,
+            transparent 30%,
+            rgba(0, 0, 0, 0.65) 100%
+        );
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* =========================================
+   3. النجوم
+========================================= */
+
+#stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.star {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: #e8d4b5;
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: twinkle 4s infinite ease-in-out;
+}
+
+@keyframes twinkle {
+    0%, 100% {
+        opacity: 0.15;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 0.9;
+        transform: scale(1.5);
+    }
+}
+
+/* =========================================
+   4. النجوم المتساقطة
+========================================= */
+
+#shooting-stars {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.shooting-star {
+    position: absolute;
+    width: 100px;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #d8b98c,
+        transparent
+    );
+
+    transform: rotate(-35deg);
+    animation: shooting 3s linear forwards;
+}
+
+@keyframes shooting {
+    0% {
+        transform: translate(0, 0) rotate(-35deg);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-450px, 450px) rotate(-35deg);
+        opacity: 0;
+    }
+}
+
+/* =========================================
+   5. الشاشات الرئيسية
+========================================= */
+
+.screen {
+    min-height: 100vh;
+    width: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 35px 20px;
+
+    opacity: 0;
+}
+
+.screen.active {
+    display: flex;
+    animation: screenEnter 1.2s ease forwards;
+}
+
+@keyframes screenEnter {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+        filter: blur(5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+/* =========================================
+   6. شاشة البداية
+========================================= */
+
+#welcome {
+    text-align: center;
+    position: relative;
+}
+
+.welcome-content {
+    max-width: 750px;
+    width: 100%;
+    padding: 35px 20px;
+}
+
+.small-title {
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--gold);
+    margin-bottom: 40px;
+    direction: ltr;
+    opacity: 0.8;
+}
+
+.welcome-content h1 {
+    font-family: 'Amiri', serif;
+    font-size: clamp(45px, 9vw, 85px);
+    font-weight: 400;
+    color: var(--beige);
+    margin-bottom: 25px;
+
+    text-shadow:
+        0 0 20px rgba(198, 164, 119, 0.15);
+}
+
+.welcome-text {
+    font-family: 'Amiri', serif;
+    font-size: clamp(19px, 4vw, 27px);
+    line-height: 2;
+    color: #d7c1a3;
+    margin-bottom: 15px;
+}
+
+.welcome-subtitle {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 2.5;
+    color: #a9967f;
+    margin-bottom: 50px;
+}
+
+/* =========================================
+   7. الأزرار
+========================================= */
+
+.main-button,
+.next-button {
+    position: relative;
+    border: 1px solid rgba(198, 164, 119, 0.5);
+    background: rgba(56, 39, 29, 0.4);
+    color: var(--beige);
+
+    padding: 15px 38px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+
+    cursor: pointer;
+    transition: all 0.4s ease;
+
+    overflow: hidden;
+}
+
+.main-button {
+    border-radius: 3px;
+    min-width: 180px;
+}
+
+.main-button:hover,
+.next-button:hover {
+    background: rgba(114, 82, 59, 0.45);
+    border-color: var(--gold);
+    color: #fff0d5;
+
+    box-shadow:
+        0 0 25px rgba(198, 164, 119, 0.12);
+
+    transform: translateY(-3px);
+}
+
+.main-button:active,
+.next-button:active {
+    transform: scale(0.97);
+}
+
+.bottom-note {
+    display: block;
+    margin-top: 65px;
+    font-size: 11px;
+    color: #75634f;
+    letter-spacing: 1px;
+}
+
+/* =========================================
+   8. تصميم الفصول
+========================================= */
+
+.chapter {
+    position: relative;
+}
+
+.chapter-content {
+    width: 100%;
+    max-width: 760px;
+
+    padding: 65px 55px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(42, 30, 22, 0.88),
+            rgba(25, 19, 15, 0.95)
+        );
+
+    border: 1px solid rgba(198, 164, 119, 0.19);
+
+    box-shadow:
+        0 20px 80px rgba(0, 0, 0, 0.45),
+        inset 0 0 40px rgba(198, 164, 119, 0.025);
+
+    position: relative;
+    text-align: center;
+}
+
+/* الزخارف الذهبية */
+
+.chapter-content::before,
+.chapter-content::after {
+    content: "✦";
+    position: absolute;
+    color: rgba(198, 164, 119, 0.55);
+    font-size: 19px;
+}
+
+.chapter-content::before {
+    top: 20px;
+    right: 22px;
+}
+
+.chapter-content::after {
+    bottom: 20px;
+    left: 22px;
+}
+
+.chapter-number {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 25px;
+}
+
+.chapter-content h2 {
+    font-family: 'Amiri', serif;
+    font-weight: 400;
+    font-size: clamp(32px, 6vw, 46px);
+    color: var(--beige);
+    margin-bottom: 15px;
+}
+
+.decorative-line {
+    width: 65px;
+    height: 1px;
+    background: var(--gold);
+    margin: 25px auto 35px;
+    opacity: 0.65;
+}
+
+.chapter-content p {
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 2.8;
+    color: #c8b69e;
+    margin-bottom: 18px;
+}
+
+.chapter-content .highlight-text {
+    font-family: 'Amiri', serif;
+    font-size: 21px;
+    color: #e5c89f;
+    margin-top: 30px;
+    margin-bottom: 35px;
+    line-height: 2.4;
+}
+
+/* =========================================
+   9. زر الانتقال
+========================================= */
+
+.next-button {
+    margin-top: 25px;
+    padding: 12px 32px;
+    border-radius: 2px;
+}
+
+/* =========================================
+   10. الفصل الأخير
+========================================= */
+
+.final-chapter .chapter-content {
+    background:
+        linear-gradient(
+            145deg,
+            rgba(48, 34, 25, 0.95),
+            rgba(23, 17, 13, 0.98)
+        );
+}
+
+.final-words {
+    font-family: 'Amiri', serif;
+    font-size: 23px !important;
+    color: #e4cba8 !important;
+    margin-top: 35px;
+}
+
+.signature {
+    margin-top: 55px;
+    padding-top: 25px;
+    border-top: 1px solid rgba(198, 164, 119, 0.15);
+}
+
+.signature span {
+    font-size: 12px;
+    color: #a28b70;
+}
+
+.signature h3 {
+    font-family: 'Amiri', serif;
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--beige);
+    margin-top: 10px;
+}
+
+/* =========================================
+   11. شاشة النهاية
+========================================= */
+
+.ending-screen {
+    text-align: center;
+}
+
+.ending-content {
+    max-width: 600px;
+    padding: 30px;
+}
+
+.ending-symbol {
+    font-size: 45px;
+    color: var(--gold);
+    margin-bottom: 30px;
+
+    animation: symbolGlow 3s infinite ease-in-out;
+}
+
+@keyframes symbolGlow {
+    0%, 100% {
+        text-shadow: 0 0 5px rgba(198, 164, 119, 0.1);
+        opacity: 0.6;
+    }
+
+    50% {
+        text-shadow: 0 0 30px rgba(198, 164, 119, 0.6);
+        opacity: 1;
+    }
+}
+
+.ending-content h2 {
+    font-family: 'Amiri', serif;
+    font-size: 38px;
+    font-weight: 400;
+    color: var(--beige);
+    margin-bottom: 25px;
+}
+
+.ending-content p {
+    font-size: 15px;
+    line-height: 2.5;
+    color: #c5b299;
+}
+
+.ending-content .ending-small {
+    font-size: 13px;
+    color: #927d65;
+    margin-top: 25px;
+}
+
+/* =========================================
+   12. تحسين الهاتف
+========================================= */
+
+@media (max-width: 600px) {
+
+    .screen {
+        padding: 20px 13px;
+    }
+
+    .chapter-content {
+        padding: 55px 22px;
+    }
+
+    .chapter-content p {
+        font-size: 14px;
+        line-height: 2.5;
+    }
+
+    .chapter-content .highlight-text {
+        font-size: 19px;
+    }
+
+    .chapter-content h2 {
+        font-size: 34px;
+    }
+
+    .welcome-content {
+        padding: 20px 10px;
+    }
+
+    .welcome-subtitle {
+        font-size: 13px;
+    }
+
+    .bottom-note {
+        margin-top: 50px;
+    }
+
+    .main-button,
+    .next-button {
+        padding: 13px 28px;
+    }
+
+    .final-words {
+        font-size: 20px !important;
+    }
+
+    .ending-content h2 {
+        font-size: 32px;
+    }
+}
+
+/* =========================================
+   13. تقليل الحركة لمن يفضل ذلك
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+}
+/* Spotify Music Player */
+
+.music-player {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 280px;
+    z-index: 20;
+
+    background: rgba(27, 21, 17, 0.95);
+    border: 1px solid rgba(198, 164, 119, 0.3);
+
+    padding: 10px;
+    border-radius: 10px;
+
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.4);
+
+    animation: screenEnter 1.5s ease;
+}
+
+.music-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    color: #d8c3a1;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.music-icon {
+    color: #c6a477;
+    font-size: 22px;
+}
+
+.music-player iframe {
+    display: block;
+    border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+    .music-player {
+        width: 210px;
+        bottom: 10px;
+        left: 10px;
+    }
+}
